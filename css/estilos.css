@@ -1,0 +1,211 @@
+/* 
+ * Estilo universal para todos los elementos
+ * - Quita márgenes y padding predeterminados.
+ * - Utiliza `border-box` para que el padding y border se incluyan en las dimensiones del elemento.
+ */
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
+ * Estilo base del cuerpo de la página
+ * - Define la fuente principal como Arial (con respaldo sans-serif).
+ * - Centra el texto horizontalmente.
+ * - Establece un color de fondo claro y un relleno uniforme.
+ */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+/* 
+ * Estilo para el encabezado principal (h1)
+ * - Añade un margen inferior para separación con otros elementos.
+ */
+h1 {
+    margin-bottom: 10px;
+}
+
+/* 
+ * Estilo para párrafos
+ * - Añade un margen inferior para separar los textos.
+ */
+p {
+    margin-bottom: 20px;
+}
+
+/* 
+ * Estilo del contenedor de la lista de elementos
+ * - Elimina el estilo de lista por defecto.
+ * - Centra horizontalmente y limita el ancho máximo.
+ * - Organiza los elementos en una cuadrícula de 4 columnas con un espacio uniforme.
+ */
+#listaElementos {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
+    grid-gap: 15px; /* Espaciado entre elementos */
+}
+
+/* 
+ * Estilo para cada carta individual
+ * - Añade un efecto de perspectiva para las animaciones 3D.
+ * - Hace que el tamaño sea cuadrado usando padding-top.
+ * - Redondea las esquinas y permite clics.
+ * - Usa una animación para que las cartas aparezcan suavemente.
+ */
+.elemento {
+    perspective: 1000px;
+    cursor: pointer;
+    width: 100%;
+    padding-top: 100%; /* Proporción cuadrada */
+    border-radius: 25px;
+    position: relative;
+    opacity: 0; /* Oculto inicialmente */
+    animation: aparicionCartas 0.5s ease-in forwards; /* Animación de aparición */
+}
+
+/* 
+ * Contenedor de cada carta
+ * - Posición absoluta dentro de su contenedor padre.
+ * - Se configura para realizar animaciones 3D al rotarse.
+ */
+.carta {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    transition: transform 0.6s; /* Animación al rotar */
+    transform-style: preserve-3d; /* Habilitar transformaciones 3D */
+}
+
+/* 
+ * Clase modificadora que voltea la carta.
+ * - Aplica una rotación de 180 grados.
+ */
+.carta.volteado {
+    transform: rotateX(-180deg);
+}
+
+/* 
+ * Animación de aparición de las cartas.
+ * - Cambia la opacidad y escala de forma suave.
+ */
+@keyframes aparicionCartas {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 
+ * Estilo para las caras de las cartas (frontal y trasera)
+ * - Configura cada cara para ocupar todo el contenedor.
+ * - Hace invisible la cara trasera desde el frente.
+ * - Centra el contenido con flexbox.
+ */
+.lado {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Ocultar la cara trasera al rotar */
+    border-radius: 25px;
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    font-size: 2em;
+    user-select: none; /* Evitar selección de texto */
+}
+
+/* 
+ * Cara frontal de la carta
+ * - Fondo rojo oscuro.
+ * - Está volteada inicialmente (rotación 180 grados).
+ */
+.frontal {
+    background-color: #cc2e2e;
+    transform: rotateX(-180deg);
+    z-index: 1; /* Asegurar que aparece sobre la trasera cuando está volteada */
+}
+
+/* 
+ * Cara trasera de la carta
+ * - Fondo púrpura oscuro con texto en blanco.
+ */
+.trasera {
+    background-color: #51345e;
+    color: white;
+}
+
+/* 
+ * Estilo para las cartas emparejadas
+ * - Cambia el color de fondo para marcar el estado emparejado.
+ * - Inhabilita el cursor para evitar más interacciones.
+ */
+.pareja {
+    .trasera {
+        background-color: #f2f2f2; /* Fondo claro */
+        cursor: default; /* Cursor inhabilitado */
+    }
+    .frontal {
+        background-color: #2ecc71; /* Verde para indicar éxito */
+        cursor: default; /* Cursor inhabilitado */
+        transition: background-color 0.6s ease; /* Transición suave */
+        transition-delay: 0.3s; /* Retraso antes de aplicar */
+    }
+}
+
+/* 
+ * Estilo para la imagen dentro de la cara frontal
+ * - Se asegura de que la imagen se ajuste bien al contenedor.
+ */
+.imagen {
+    width: 50%; /* Escala de la imagen */
+    height: 50%;
+    object-fit: cover; /* Recorta la imagen si es necesario */
+}
+
+/* 
+ * Estilo para pantallas pequeñas (máximo 600px de ancho)
+ * - Reduce el número de columnas en la cuadrícula.
+ * - Ajusta el espacio entre elementos y redondea menos las esquinas.
+ */
+@media (max-width: 600px) {
+    #listaElementos {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en lugar de 4 */
+        grid-gap: 10px; /* Reducir espacio entre cartas */
+    }
+
+    .elemento {
+        border-radius: 20px; /* Redondeado más sutil */
+    }
+}
+
+/* 
+ * Estilo para pantallas muy pequeñas (máximo 420px de ancho)
+ * - Reduce aún más el número de columnas y los espacios.
+ * - Ajusta el redondeado de las esquinas para adaptarse a un tamaño menor.
+ */
+@media (max-width: 420px) {
+    #listaElementos {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en lugar de 3 */
+        grid-gap: 8px; /* Espacio mínimo entre cartas */
+    }
+
+    .elemento {
+        border-radius: 15px; /* Redondeado aún menor */
+    }
+}
